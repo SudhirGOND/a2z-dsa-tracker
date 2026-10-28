@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    implementation("com.google.code.gson:gson:2.13.1")
+    implementation("com.google.code.gson:gson:2.15.0")
 
     testImplementation(libs.junit)
 
