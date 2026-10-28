@@ -1,0 +1,31 @@
+<idea-plugin>
+    <id>com.a2zdsatracker</id>
+    <name>DSA Sheet Tracker</name>
+    <vendor email="sudhirgonddhoom786@gmail.com" url="https://github.com/SudhirGOND">SUDHIR</vendor>
+
+    <description><![CDATA[
+        Track your Data Structures and Algorithms sheet progress directly inside your IDE.
+        <ul>
+            <li>Topic, category and problem tree with progress counts</li>
+            <li>Easy / Medium / Hard tags</li>
+            <li>Quick links to article, GeeksforGeeks, LeetCode and YouTube</li>
+            <li>Progress is saved locally and shared across all your projects</li>
+        </ul>
+        Problem list based on Striver's A2Z DSA Sheet (takeUforward), used with permission.
+    ]]></description>
+
+    <change-notes><![CDATA[
+        <ul><li>1.0.0 - Initial release</li></ul>
+    ]]></change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="com.a2zdsatracker.state.TrackerState"/>
+        <toolWindow id="DSA Sheet Tracker"
+                    secondary="true"
+                    icon="AllIcons.Toolwindows.ToolWindowTodo"
+                    anchor="right"
+                    factoryClass="com.a2zdsatracker.toolwindow.A2ZToolWindowFactory"/>
+    </extensions>
+</idea-plugin>
