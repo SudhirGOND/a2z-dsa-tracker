@@ -1,220 +1,117 @@
-# TUF_DSA_PLUGIN
+# DSA Sheet Tracker
 
-[![Twitter Follow](https://img.shields.io/badge/follow-%40JBPlatform-1DA1F2?logo=twitter)](https://twitter.com/JBPlatform)
-[![Developers Forum](https://img.shields.io/badge/JetBrains%20Platform-Join-blue)][jb:forum]
+Track your Data Structures and Algorithms sheet progress without leaving your IDE.
 
-## Connect repository to GitHub
+DSA Sheet Tracker adds a tool window to IntelliJ IDEA that lists the problems of Striver's A2Z DSA Sheet, grouped by topic and category. Tick problems as you solve them, see your progress at a glance, and jump to the article, GeeksforGeeks, LeetCode or YouTube resource for any problem.
 
-1. [Create a new repository](https://github.com/new) on GitHub.
-2. Run the following commands to initialize and push this project to the repository created in step 1:
+<!-- Add screenshots here (light and dark theme):
+![Tool window](docs/screenshots/tool-window-dark.png)
+![Tool window light](docs/screenshots/tool-window-light.png)
+-->
+
+## Features
+
+- **Three-level tree:** Topic → Category → Problem, with solved counts (`x / y`) at every level.
+- **Overall progress bar** showing solved problems out of the full sheet.
+- **Easy / Medium / Hard tags** next to categories and problems.
+- **Quick resource links:** double-click a problem to open a popup with its Article, GeeksforGeeks, LeetCode and YouTube links (only the links that exist for that problem are shown).
+- **Partial progress states:** tick a whole category or topic, or tick problems one by one, and parent checkboxes update automatically.
+- **Saved across projects:** your progress is stored once for the IDE, so it stays the same in every project you open.
+- **Theme aware:** colors adapt to light and dark IDE themes.
+
+## Installation
+
+### From JetBrains Marketplace
+
+1. Open `Settings | Plugins | Marketplace`.
+2. Search for **DSA Sheet Tracker**.
+3. Click **Install** and restart the IDE if asked.
+
+### From disk
+
+1. Download the plugin `.zip` from the [Releases](https://github.com/<your-username>/<your-repository>/releases) page.
+2. Open `Settings | Plugins`, click the gear icon, and choose **Install Plugin from Disk...**.
+3. Select the downloaded `.zip` file and restart the IDE.
+
+## Usage
+
+1. Open the **DSA Sheet Tracker** tool window from the right sidebar.
+2. Expand a topic, then a category, to see its problems.
+3. Tick the checkbox next to a problem when you solve it.
+4. Double-click a problem to open its resource links.
+
+Your progress is saved automatically.
+
+## Compatibility
+
+Built and tested against IntelliJ IDEA 2025.3. The plugin only uses the IntelliJ Platform, so it is intended to work in other IntelliJ-based IDEs that support this platform version.
+
+## Privacy
+
+All data stays on your machine. The plugin does not collect analytics and does not send your progress anywhere. Progress is stored in a local file named `a2z-dsa-tracker.xml` in your IDE's configuration directory. Links open in your default browser only when you choose to open them.
+
+## Data source and credits
+
+The problem list is based on **Striver's A2Z DSA Sheet** by [takeUforward](https://takeuforward.org/dsa/strivers-a2z-sheet-learn-dsa-a-to-z), used with the permission of its authors. All credit for the curriculum and problem selection goes to them.
+
+Difficulty tags are assigned per category and are an approximation. An individual problem may be rated differently on LeetCode or GeeksforGeeks.
+
+Problem titles and links point to their original sources (LeetCode, GeeksforGeeks, YouTube and takeUforward). This plugin does not host or copy their problem statements or solutions.
+
+## Project structure
+
+```
+src/main
+├── java/com/a2zdsatracker
+│   ├── model/        Problem and related data classes
+│   ├── state/        Persistent progress storage (TrackerState)
+│   ├── service/      Loads the problem list and applies saved progress
+│   ├── toolwindow/   Tool window, tree nodes, renderer, link popup
+│   └── actions/      IDE actions
+└── resources
+    ├── problems.json     Problem dataset
+    └── META-INF
+        ├── plugin.xml        Plugin configuration
+        └── pluginIcon.svg    Plugin logo
+```
+
+## Building from source
+
+Requirements: a JDK supported by the IntelliJ Platform version configured in `build.gradle.kts`.
 
 ```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/<username>/<repository>.git
-git push -u origin main
+# Run a sandbox IDE with the plugin installed
+./gradlew runIde
+
+# Check compatibility against the configured IDE versions
+./gradlew verifyPlugin
+
+# Build the plugin distribution (.zip in build/distributions)
+./gradlew buildPlugin
 ```
 
-3. Configure publishing [secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) in the GitHub
-   repository settings:
+On Windows, use `gradlew.bat` instead of `./gradlew`.
 
-| Secret                 | Description                                                                                                |
-|------------------------|------------------------------------------------------------------------------------------------------------|
-| `PUBLISH_TOKEN`        | JetBrains Marketplace token — [generate here](https://plugins.jetbrains.com/author/me/tokens)              |
-| `CERTIFICATE_CHAIN`    | Plugin signing certificate chain ([docs](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html)) |
-| `PRIVATE_KEY`          | Plugin signing private key                                                                                 |
-| `PRIVATE_KEY_PASSWORD` | Password for the private key                                                                               |
+## Roadmap
 
-## Overview
+- Search and filter problems
+- Expand all / collapse all
+- Personal notes per problem
+- Export and import progress
+- Progress statistics and streaks
 
-This repository implements an IntelliJ Platform plugin.
+Feature requests are welcome through the issue tracker.
 
-## Demo Functionality
+## Contributing
 
-The sample plugin adds a `My Tool Window` tool window with a simple functionality of shuffling a random number.
+Bug reports and suggestions are welcome. Please open an issue and include your IDE version, the plugin version, and steps to reproduce the problem. For code changes, open an issue first to discuss what you would like to change.
 
-## Plugin structure
+## License
 
-A generated project contains the following content structure:
+The plugin source code is released under the [MIT License](LICENSE).
 
-```
-.
-├── .github/                GitHub Workflows, issue templates, and Dependabot configuration
-├── .run/                   Predefined Run/Debug Configurations
-├── gradle
-│   ├── wrapper/            Gradle Wrapper
-│   ├── libs.versions.toml  Version catalog
-├── src                     Plugin sources
-│   └── main
-│       ├── kotlin/         Kotlin production sources
-│       └── resources/      Plugin resources
-│           ├── META-INF/   Plugin configuration file and logo
-│           └── messages/   Message bundles
-├── .gitignore              Git ignoring rules
-├── build.gradle.kts        Gradle build configuration
-├── gradle.properties       Gradle configuration properties
-├── gradlew                 *nix Gradle Wrapper script
-├── gradlew.bat             Windows Gradle Wrapper script
-├── README.md               This file
-└── settings.gradle.kts     Gradle project settings
-```
+The problem dataset and the A2Z sheet structure belong to their original authors and are used with their permission. They are not covered by the MIT License of this repository.
 
-In addition to the configuration files, the most crucial part is the `src` directory, which contains our implementation
-and the manifest for our plugin – [plugin.xml][file:plugin.xml].
+## Disclaimer
 
-> [!NOTE]
-> To use Java in your plugin, create the `/src/main/java` directory.
-
-The plugin logo is placed in `src/main/resources/META-INF/pluginIcon.svg`.
-See [Plugin Logo][docs:logo] for more information and logo requirements.
-
-## Build script
-
-The [build.gradle.kts][file:build.gradle.kts] is the core of the project definition.
-It applies three Gradle plugins:
-
-| Plugin                            | Description                                                                      |
-|-----------------------------------|----------------------------------------------------------------------------------|
-| `org.jetbrains.kotlin.jvm`        | Adds Kotlin support                                                              |
-| `org.jetbrains.changelog`         | Simplifies patching the [CHANGELOG.md][file:CHANGELOG.md] file                   |
-| `org.jetbrains.intellij.platform` | The [IntelliJ Platform Gradle Plugin][docs:intellij-platform-gradle-plugin-docs] |
-
-The `intellijPlatform` dependencies block selects the IDE to compile against:
-
-```kotlin
-intellijIdea("2025.3.5")
-```
-
-See [Target Versions][docs:target-version] for more information.
-
-The `intellijPlatform` dependencies block also contains a dependency on the platform testing framework:
-
-```kotlin
-testFramework(TestFrameworkType.Platform)
-```
-
-See [Testing][docs:testing] for more information
-
-## Plugin configuration file
-
-The plugin configuration file is a [plugin.xml][file:plugin.xml] file located in the `src/main/resources/META-INF`
-directory.
-It provides general information about the plugin, its dependencies, extensions, and listeners.
-
-You can read more about this file in the [Plugin Configuration File][docs:plugin.xml] section of our documentation.
-
-### Plugin ID and name
-
-Generated plugin ID and name may require adjustment.
-
-These values are generated based on _Group ID_ and _Artifact ID_ provided in the IDE Plugin wizard.
-It is recommended to review `<id>` and `<name>` elements in the plugin.xml file, and adjust them if needed.
-
-Please note that Gradle properties `rootProject.name` and `project.group` don't need to match the `<id>` and `<name>`
-elements.
-There is no IntelliJ Platform-related reason they should as they serve different functions.
-
-## Predefined Run/Debug configurations
-
-Within the default project structure, there is a `.run` directory provided containing predefined *Run/Debug
-configurations* that expose corresponding Gradle tasks:
-
-| Configuration name  | Description                                                                                                                                                                           |
-|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Run IDE with Plugin | Runs [`:runIde`][docs:intellij-platform-gradle-plugin-runIde] IntelliJ Platform Gradle Plugin task. Use the *Debug* icon for plugin debugging.                                        |
-| Run Tests           | Runs [`:check`][gradle:lifecycle-tasks] Gradle task.                                                                                                                                  |
-| Run Verifications   | Runs [`:verifyPlugin`][docs:intellij-platform-gradle-plugin-verifyPlugin] IntelliJ Platform Gradle Plugin task to check the plugin compatibility against the specified IntelliJ IDEs. |
-
-> [!NOTE]
-> You can find the logs from the running task in the `idea.log` tab.
-
-## Publishing the plugin
-
-> [!TIP]
-> Make sure to follow all guidelines listed in [Publishing a Plugin][docs:publishing] to follow all recommended and
-> required steps.
-
-Releasing a plugin to [JetBrains Marketplace](https://plugins.jetbrains.com) is a straightforward operation that uses
-the `publishPlugin` Gradle task provided by
-the [intellij-platform-gradle-plugin][docs:intellij-platform-gradle-plugin-docs].
-
-You can also upload the plugin to the [JetBrains Plugin Repository](https://plugins.jetbrains.com/plugin/upload)
-manually via UI.
-
-## GitHub Integration
-
-### GitHub Actions
-
-The project includes [GitHub Actions][https://docs.github.com/en/actions] workflows for automated CI/CD:
-
-| Workflow                                 | Trigger        | Description                                                     |
-|------------------------------------------|----------------|-----------------------------------------------------------------|
-| [Build](.github/workflows/build.yml)     | Push / PR      | Builds, tests, and verifies the plugin; creates a draft release |
-| [Release](.github/workflows/release.yml) | GitHub Release | Publishes the plugin to JetBrains Marketplace                   |
-
-### GitHub issue templates
-
-The project includes GitHub issue templates:
-
-- [Bug Report](.github/ISSUE_TEMPLATE/bug-report.yml)
-- [Feature Request](.github/ISSUE_TEMPLATE/feature-request.yml)
-
-See [Syntax for issue forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms).
-
-### Dependabot
-
-[Dependabot configuration](.github/dependabot.yml) file enables tracking outdated or vulnerable dependencies.
-
-## Useful links
-
-- [IntelliJ Platform SDK Plugin SDK][docs]
-- [IntelliJ Platform Gradle Plugin Documentation][docs:intellij-platform-gradle-plugin-docs]
-- [IntelliJ Platform Explorer][jb:ipe]
-- [JetBrains Marketplace Quality Guidelines][jb:quality-guidelines]
-- [IntelliJ Platform UI Guidelines][jb:ui-guidelines]
-- [JetBrains Marketplace Paid Plugins][jb:paid-plugins]
-- [IntelliJ SDK Code Samples][gh:code-samples]
-
-[docs]: https://plugins.jetbrains.com/docs/intellij
-
-[docs:plugin.xml]: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html?from=IJPluginReadmeFile
-
-[docs:publishing]: https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginReadmeFile
-
-[docs:intellij-platform-gradle-plugin-docs]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html?from=IJPluginReadmeFile
-
-[docs:intellij-platform-gradle-plugin-runIde]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-tasks.html?from=IJPluginReadmeFile#runIde
-
-[docs:intellij-platform-gradle-plugin-verifyPlugin]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-tasks.html?from=IJPluginReadmeFile#verifyPlugin
-
-[docs:logo]: https://plugins.jetbrains.com/docs/intellij/plugin-icon-file.html?from=IJPluginReadmeFile
-
-[docs:target-version]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html?from=IJPluginReadmeFile#target-versions
-
-[docs:testing]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html?from=IJPluginReadmeFile#testing
-
-[file:build.gradle.kts]: ./build.gradle.kts
-
-[file:CHANGELOG.md]: ./CHANGELOG.md
-
-[file:gradle.properties]: ./gradle.properties
-
-[file:plugin.xml]: ./src/main/resources/META-INF/plugin.xml
-
-[gh:code-samples]: https://github.com/JetBrains/intellij-sdk-code-samples
-
-[gradle:lifecycle-tasks]: https://docs.gradle.org/current/userguide/java_plugin.html#lifecycle_tasks
-
-[jb:github]: https://github.com/JetBrains/.github/blob/main/profile/README.md
-
-[jb:forum]: https://platform.jetbrains.com/
-
-[jb:quality-guidelines]: https://plugins.jetbrains.com/docs/marketplace/quality-guidelines.html
-
-[jb:paid-plugins]: https://plugins.jetbrains.com/docs/marketplace/paid-plugins-marketplace.html
-
-[jb:ipe]: https://jb.gg/ipe
-
-[jb:ui-guidelines]: https://jetbrains.github.io/ui
+This plugin is an independent tool. JetBrains, IntelliJ IDEA, LeetCode, GeeksforGeeks, YouTube and takeUforward are trademarks of their respective owners.
